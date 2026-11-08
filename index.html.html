@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Física Lab | Juegos interactivos</title>
+<style>
+:root{--bg:#08111f;--panel:#101e31;--panel2:#162840;--ink:#edf5ff;--muted:#a9bbd2;--cyan:#54d8e8;--blue:#6d8cff;--green:#64e0ae;--orange:#ffbd69}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#18365b 0,transparent 38%),linear-gradient(145deg,#07101c,#0b1728 60%,#101c32);color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif;min-height:100vh}
+header{padding:32px 6vw 22px;display:flex;justify-content:space-between;align-items:center;gap:18px;border-bottom:1px solid #29415c;background:#07111dcc;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:grid;place-items:center;color:#07111f;font-weight:900;font-size:23px;box-shadow:0 8px 28px #54d8e833}
+h1{font-size:clamp(21px,3vw,30px);margin:0;letter-spacing:-.7px}.subbrand{font-size:12px;color:var(--muted);margin-top:3px}
+.pill{border:1px solid #34516e;border-radius:999px;padding:8px 13px;color:#bfeaf2;font-size:12px;letter-spacing:.5px}
+main{width:min(1120px,90vw);margin:34px auto 70px}.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;align-items:stretch;margin-bottom:28px}
+.hero-copy,.hero-visual,.game,.stats{background:linear-gradient(145deg,#13263d,#0d1b2d);border:1px solid #29415c;border-radius:22px;box-shadow:0 18px 55px #0003}
+.hero-copy{padding:clamp(22px,4vw,40px)}.eyebrow{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h2{font-size:clamp(29px,4.2vw,47px);line-height:1.05;letter-spacing:-1.5px;margin:12px 0}.hero p{color:var(--muted);line-height:1.65;max-width:610px}
+.hero-visual{min-height:235px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 50%,#1b4264,#0d1b2d 70%)}
+.orbit{width:180px;height:180px;border:1px solid #5c9bc766;border-radius:50%;position:absolute;transform:rotate(-25deg) scaleY(.55)}.orbit.two{width:245px;height:245px;transform:rotate(45deg) scaleY(.48)}
+.planet{width:80px;height:80px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#b8fbff,#36a8d0 40%,#15518d 75%);box-shadow:0 0 50px #42c8ed88;z-index:1}
+.dot{width:15px;height:15px;border-radius:50%;background:var(--orange);position:absolute;top:37px;right:24%;box-shadow:0 0 22px #ffbd69}
+.section-title{display:flex;justify-content:space-between;align-items:end;margin:30px 2px 14px;gap:15px}.section-title h3{margin:0;font-size:20px}.section-title span{color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.game{padding:22px;min-height:270px}.game-head{display:flex;align-items:center;gap:13px;margin-bottom:12px}.game-icon{width:44px;height:44px;border-radius:13px;background:#1b3854;display:grid;place-items:center;font-size:23px}.game h4{font-size:18px;margin:0 0 4px}.tag{font-size:11px;color:var(--cyan)}
+.desc{color:var(--muted);font-size:13px;line-height:1.5;margin:10px 0 17px}
+button{border:0;border-radius:11px;padding:11px 16px;font-weight:750;background:linear-gradient(110deg,var(--cyan),#7ba6ff);color:#061322;cursor:pointer;transition:.2s}
+button:hover{transform:translateY(-2px);filter:brightness(1.08)}button.secondary{background:#203954;color:var(--ink);border:1px solid #365775}
+.playarea{margin-top:17px;padding:16px;background:#091727;border:1px solid #29415c;border-radius:14px;display:none}.playarea.active{display:block}
+.question{font-weight:700;line-height:1.5;margin:0 0 12px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:8px}.answers button{background:#1b3550;color:var(--ink);border:1px solid #355675;text-align:left}.answers button:hover{background:#285071}.feedback{min-height:23px;margin-top:12px;font-size:13px;color:var(--green)}
+.scoreline{color:var(--muted);font-size:12px;margin-top:8px}
+.range{width:100%;accent-color:var(--cyan);margin:12px 0}.result{color:var(--cyan);font-weight:700;margin:8px 0}
+.simstage{height:115px;border-radius:12px;background:linear-gradient(#102b45,#0b1a2b);position:relative;overflow:hidden;margin:10px 0;border-bottom:3px solid #50738e}
+.ball{width:25px;height:25px;border-radius:50%;background:radial-gradient(circle at 30% 25%,white,#55d8e8 45%,#1474a0);position:absolute;bottom:12px;left:12px;box-shadow:0 0 20px #54d8e877}
+.track{position:absolute;left:0;right:0;bottom:0;height:12px;background:repeating-linear-gradient(90deg,#294965 0 18px,#1a344c 18px 36px)}
+input[type=number]{width:100%;padding:10px;border-radius:9px;border:1px solid #34516e;background:#10243a;color:white;margin:5px 0 10px}
+.stats{margin-top:20px;padding:17px 20px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.stats strong{color:var(--cyan)}
+footer{text-align:center;color:#7890aa;font-size:11px;padding:25px 10px 35px}footer .creator-label{color:#54d8e8;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}footer b{color:#d5e3f3;font-weight:600}
+@media(max-width:720px){header{padding:18px 5vw}.hero{grid-template-columns:1fr}.hero-visual{min-height:190px}.grid{grid-template-columns:1fr}.section-title{align-items:start;flex-direction:column}.pill{display:none}}
+
+/* Expanded educational edition */
+:root{--violet:#a78bfa;--pink:#ff7eb6;--lime:#b7f36b;--gold:#ffd166}
+.hero-copy{padding:clamp(28px,5vw,54px)}
+.hero-visual{min-height:300px}
+.game{min-height:330px;padding:26px;background:linear-gradient(145deg,#172e49,#101c30);transition:transform .22s,border-color .22s}
+.game:hover{transform:translateY(-4px);border-color:#4b789c}
+.game-icon{width:54px;height:54px;font-size:27px;background:linear-gradient(145deg,#214b68,#26365d)}
+.game h4{font-size:21px}
+.desc{font-size:14px;line-height:1.7}
+.info-section{margin-top:42px}
+.info-intro{color:var(--muted);line-height:1.7;max-width:760px;margin:9px 0 18px}
+.topic-grid,.scientist-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.topic-card,.scientist-card{border:1px solid #2b4966;border-radius:18px;padding:21px;background:linear-gradient(145deg,#142a43,#0d1a2b)}
+.topic-card .symbol{font-size:28px;margin-bottom:10px}
+.topic-card h4,.scientist-card h4{font-size:17px;margin:0 0 8px}
+.topic-card p,.scientist-card p{font-size:13px;color:var(--muted);line-height:1.65;margin:0}
+.scientist-card{position:relative;overflow:hidden}
+.scientist-card:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink))}
+.scientist-era{font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:var(--cyan);font-weight:800;margin:3px 0 10px}
+.scientist-card h4{font-size:19px}
+.fact{margin-top:13px;padding:10px 12px;background:#1b3550;border-radius:10px;color:#d8eaff;font-size:12px;line-height:1.55}
+.big-banner{margin-top:24px;border:1px solid #3a5a78;border-radius:20px;padding:24px;background:linear-gradient(110deg,#193b55,#29234c 60%,#402448)}
+.big-banner h3{margin:0 0 8px;font-size:22px}.big-banner p{color:#d0dced;line-height:1.65;margin:0}
+.section-kicker{font-size:11px;color:var(--pink);font-weight:800;letter-spacing:1.6px;text-transform:uppercase}
+.quiz-box{margin-top:16px;padding:18px;border-radius:14px;background:#0b1929;border:1px solid #355575}
+.quiz-box .answers button{min-height:48px}
+@media(max-width:850px){.topic-grid,.scientist-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.topic-grid,.scientist-grid{grid-template-columns:1fr}.game{padding:20px}}
+
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">Φ</div><div><h1>FÍSICA LAB</h1><div class="subbrand">Explora. Experimenta. Aprende.</div></div></div><div class="pill">CENTRO DE EXPERIMENTOS · 01</div></header>
+<main>
+<section class="hero">
+<div class="hero-copy"><div class="eyebrow">Laboratorio interactivo</div><h2>La física está<br>en todas partes.</h2><p>Bienvenido a un laboratorio digital para descubrir cómo funciona el universo. Aprende con explicaciones claras, experimentos interactivos, retos y las historias de científicos que cambiaron nuestra forma de entender el mundo. Explora movimiento, fuerzas, gravedad, energía, electricidad, magnetismo, luz y sonido.</p><button onclick="document.getElementById('juegos').scrollIntoView({behavior:'smooth'})">Explorar juegos ↓</button></div>
+<div class="hero-visual"><div class="orbit"></div><div class="orbit two"></div><div class="planet"></div><div class="dot"></div></div>
+</section>
+<div class="section-title" id="juegos"><h3>Selecciona un experimento</h3><span>6 módulos · aprende jugando</span></div>
+<section class="grid">
+<article class="game"><div class="game-head"><div class="game-icon">🚀</div><div><h4>Movimiento</h4><div class="tag">VELOCIDAD Y DISTANCIA</div></div></div><p class="desc">Un objeto recorre una pista. Ajusta la velocidad y observa cuánto avanza en el tiempo indicado.</p><button onclick="openGame('move')">Iniciar simulación</button><div class="playarea" id="move"><p class="question">Ajusta la velocidad del objeto:</p><input class="range" id="speed" type="range" min="1" max="20" value="8" oninput="moveCalc()"><div class="result" id="speedval">8 m/s</div><div class="simstage"><div class="ball" id="movingBall"></div><div class="track"></div></div><label for="seconds">Tiempo (segundos)</label><input id="seconds" type="number" min="1" max="60" value="5" oninput="moveCalc()"><div class="result" id="distance">Distancia: 40 metros</div><div class="feedback">Fórmula: distancia = velocidad × tiempo.</div></div></article>
+<article class="game"><div class="game-head"><div class="game-icon">🧲</div><div><h4>Fuerzas</h4><div class="tag">FUERZA Y ACELERACIÓN</div></div></div><p class="desc">Descubre cómo cambia la aceleración cuando aplicas más fuerza a un objeto de la misma masa.</p><button onclick="openGame('force')">Iniciar reto</button><div class="playarea" id="force"><p class="question">Un carrito tiene una masa de 4 kg. ¿Qué aceleración produce una fuerza de 12 N?</p><div class="answers"><button onclick="answer('force',0,false)">2 m/s²</button><button onclick="answer('force',1,true)">3 m/s²</button><button onclick="answer('force',2,false)">8 m/s²</button><button onclick="answer('force',3,false)">16 m/s²</button></div><div class="feedback" id="force-feedback"></div><div class="scoreline">Pista: aceleración = fuerza ÷ masa.</div></div></article>
+<article class="game"><div class="game-head"><div class="game-icon">🌍</div><div><h4>Gravedad</h4><div class="tag">CAÍDA Y ATRACCIÓN</div></div></div><p class="desc">Compara el peso de un objeto en distintos mundos. Su masa no cambia, pero su peso sí.</p><button onclick="openGame('gravity')">Explorar planetas</button><div class="playarea" id="gravity"><p class="question">Elige un mundo y observa cuánto pesaría un objeto de 10 kg.</p><select id="planet" class="range" onchange="gravityCalc()" style="background:#10243a;color:white;padding:10px;border:1px solid #34516e;border-radius:9px;width:100%"><option value="9.8">Tierra</option><option value="3.7">Marte</option><option value="1.6">Luna</option><option value="24.8">Júpiter</option></select><div class="result" id="weight">Peso: 98 N</div><div class="feedback">Fórmula: peso = masa × gravedad.</div></div></article>
+<article class="game"><div class="game-head"><div class="game-icon">⚡</div><div><h4>Energía</h4><div class="tag">ENERGÍA CINÉTICA</div></div></div><p class="desc">Comprueba cómo influyen la masa y la velocidad en la energía de un objeto en movimiento.</p><button onclick="openGame('energy')">Calcular energía</button><div class="playarea" id="energy"><p class="question">Una pelota de 2 kg viaja a 3 m/s. ¿Cuál es su energía cinética?</p><div class="answers"><button onclick="answer('energy',0,false)">6 joules</button><button onclick="answer('energy',1,true)">9 joules</button><button onclick="answer('energy',2,false)">12 joules</button><button onclick="answer('energy',3,false)">18 joules</button></div><div class="feedback" id="energy-feedback"></div><div class="scoreline">Pista: Ec = ½ × masa × velocidad².</div></div></article>
+<article class="game"><div class="game-head"><div class="game-icon">💡</div><div><h4>Electricidad y magnetismo</h4><div class="tag">CIRCUITOS</div></div></div><p class="desc">Identifica qué necesita un circuito básico para que la corriente pueda circular.</p><button onclick="openGame('electric')">Probar conocimientos</button><div class="playarea" id="electric"><p class="question">¿Qué elemento proporciona energía eléctrica a un circuito simple?</p><div class="answers"><button onclick="answer('electric',0,false)">Un foco</button><button onclick="answer('electric',1,true)">Una batería</button><button onclick="answer('electric',2,false)">Un interruptor</button><button onclick="answer('electric',3,false)">Un cable</button></div><div class="feedback" id="electric-feedback"></div></div></div></article>
+<article class="game"><div class="game-head"><div class="game-icon">🌈</div><div><h4>Luz y sonido</h4><div class="tag">ONDAS Y REFLEXIÓN</div></div></div><p class="desc">Resuelve una pregunta sobre cómo se comportan las ondas y cómo percibimos el mundo.</p><button onclick="openGame('waves')">Iniciar desafío</button><div class="playarea" id="waves"><p class="question">¿Qué fenómeno ocurre cuando la luz rebota en una superficie como un espejo?</p><div class="answers"><button onclick="answer('waves',0,false)">Refracción</button><button onclick="answer('waves',1,false)">Absorción</button><button onclick="answer('waves',2,true)">Reflexión</button><button onclick="answer('waves',3,false)">Vibración</button></div><div class="feedback" id="waves-feedback"></div></div></div></article>
+</section>
+
+<section class="info-section">
+  <div class="section-title"><h3>Explora los grandes temas de la Física</h3><span>Conceptos explicados con ejemplos</span></div>
+  <p class="info-intro">La Física estudia la materia, la energía, el movimiento y las interacciones que ocurren en la naturaleza. Está presente cuando caminas, enciendes una lámpara, escuchas música o miras las estrellas.</p>
+  <div class="topic-grid">
+    <article class="topic-card"><div class="symbol">🏎️</div><h4>Movimiento</h4><p>Describe cómo cambia de posición un objeto. La velocidad relaciona la distancia recorrida con el tiempo empleado. Ejemplo: un automóvil que avanza por una carretera.</p></article>
+    <article class="topic-card"><div class="symbol">🧲</div><h4>Fuerzas</h4><p>Una fuerza es un empujón o un jalón capaz de cambiar el movimiento o la forma de un objeto. Se mide en newtons (N).</p></article>
+    <article class="topic-card"><div class="symbol">🌎</div><h4>Gravedad</h4><p>Es la atracción entre objetos que tienen masa. En la Tierra nos mantiene sobre el suelo y hace que los objetos caigan cuando se sueltan.</p></article>
+    <article class="topic-card"><div class="symbol">🔋</div><h4>Energía</h4><p>Es la capacidad de producir cambios. La energía puede transformarse: una batería convierte energía química en eléctrica y una lámpara en luz y calor.</p></article>
+    <article class="topic-card"><div class="symbol">⚡</div><h4>Electricidad y magnetismo</h4><p>La electricidad se relaciona con las cargas eléctricas. El magnetismo se relaciona con campos magnéticos. Juntos explican motores, generadores y muchos aparatos.</p></article>
+    <article class="topic-card"><div class="symbol">🌈</div><h4>Luz y sonido</h4><p>La luz es una onda electromagnética; el sonido es una vibración que necesita un medio, como el aire, para propagarse. Por eso el sonido no viaja en el vacío.</p></article>
+  </div>
+</section>
+
+<section class="info-section">
+  <div class="section-title"><h3>Científicos que cambiaron la Física</h3><span>Personas · ideas · descubrimientos</span></div>
+  <p class="info-intro">La ciencia avanza gracias a personas que observan, hacen preguntas, experimentan y comparten sus descubrimientos. Estas son algunas figuras importantes de la historia de la Física.</p>
+  <div class="scientist-grid">
+    <article class="scientist-card"><div class="scientist-era">1643–1727 · Inglaterra</div><h4>Isaac Newton</h4><p>Formuló las tres leyes del movimiento y la ley de gravitación universal. Sus ideas ayudaron a explicar por qué se mueven los objetos y cómo se atraen los cuerpos.</p><div class="fact"><b>Idea clave:</b> la fuerza neta puede cambiar la velocidad o dirección del movimiento.</div></article>
+    <article class="scientist-card"><div class="scientist-era">1879–1955 · Alemania / Suiza / EE. UU.</div><h4>Albert Einstein</h4><p>Desarrolló la teoría de la relatividad especial y general. También explicó el efecto fotoeléctrico, trabajo por el que recibió el Nobel de Física de 1921.</p><div class="fact"><b>Idea clave:</b> espacio y tiempo están relacionados; la gravedad se entiende como curvatura del espacio-tiempo.</div></article>
+    <article class="scientist-card"><div class="scientist-era">1564–1642 · Italia</div><h4>Galileo Galilei</h4><p>Realizó estudios fundamentales sobre la caída de los cuerpos y el movimiento. Mejoró el telescopio y observó lunas de Júpiter, montañas en la Luna y fases de Venus.</p><div class="fact"><b>Idea clave:</b> medir y experimentar permite poner a prueba las explicaciones sobre la naturaleza.</div></article>
+    <article class="scientist-card"><div class="scientist-era">1791–1867 · Reino Unido</div><h4>Michael Faraday</h4><p>Descubrió la inducción electromagnética y desarrolló conceptos fundamentales de los campos eléctricos y magnéticos. Sus investigaciones hicieron posibles tecnologías como los generadores.</p><div class="fact"><b>Idea clave:</b> un campo magnético cambiante puede inducir corriente eléctrica.</div></article>
+    <article class="scientist-card"><div class="scientist-era">1867–1934 · Polonia / Francia</div><h4>Marie Curie</h4><p>Investigó la radiactividad y, junto con Pierre Curie, descubrió los elementos polonio y radio. Fue la primera mujer en recibir un Premio Nobel y ganó dos en distintas ciencias.</p><div class="fact"><b>Idea clave:</b> algunos átomos pueden emitir radiación al transformarse.</div></article>
+    <article class="scientist-card"><div class="scientist-era">1629–1695 · Países Bajos</div><h4>Christiaan Huygens</h4><p>Estudió la naturaleza ondulatoria de la luz y formuló el principio que lleva su nombre. También hizo aportaciones a la mecánica y a la astronomía.</p><div class="fact"><b>Idea clave:</b> las ondas pueden propagarse y explicar fenómenos como la reflexión y la refracción.</div></article>
+  </div>
+</section>
+
+<section class="big-banner">
+  <div class="section-kicker">Reto final · Comprueba lo aprendido</div>
+  <h3>¿Qué tanto sabes de Física?</h3>
+  <p>Responde estas preguntas rápidas. Lee con atención: cada una está relacionada con los conceptos y científicos de esta página.</p>
+  <div class="quiz-box">
+    <p class="question">¿Qué científico formuló las tres leyes del movimiento?</p>
+    <div class="answers">
+      <button onclick="finalQuiz(0,false)">Albert Einstein</button>
+      <button onclick="finalQuiz(1,true)">Isaac Newton</button>
+      <button onclick="finalQuiz(2,false)">Marie Curie</button>
+      <button onclick="finalQuiz(3,false)">Michael Faraday</button>
+    </div>
+    <div class="feedback" id="final-feedback"></div>
+    <button class="secondary" style="margin-top:10px" onclick="nextFinalQuestion()">Siguiente pregunta →</button>
+  </div>
+</section>
+
+<div class="stats"><span>🧠 <strong>Aprende</strong> con ejemplos</span><span>🔬 <strong>Experimenta</strong> con simulaciones</span><span>🏁 <strong>Supera</strong> cada reto</span></div>
+</main>
+<footer>Proyecto escolar de Física · <span class="creator-label">Creadores originales</span>: <b>Aaron y David López</b></footer>
+<script>
+let finalStep=0;
+const finalQuestions=[
+{q:'¿Qué científico formuló las tres leyes del movimiento?',a:['Albert Einstein','Isaac Newton','Marie Curie','Michael Faraday'],correct:1,why:'Newton formuló las tres leyes del movimiento.'},
+{q:'¿Qué ocurre con la energía en una transformación?',a:['Desaparece siempre','Se crea de la nada','Cambia de una forma a otra','Se convierte siempre en masa'],correct:2,why:'La energía se transforma; en un sistema aislado se conserva.'},
+{q:'¿Qué fenómeno explica que veamos nuestra imagen en un espejo?',a:['Reflexión','Gravedad','Inducción','Aceleración'],correct:0,why:'La luz se refleja en la superficie del espejo.'}
+];
+function finalQuiz(index,correct){const q=finalQuestions[finalStep];const ok=index===q.correct;const f=document.getElementById('final-feedback');f.textContent=ok?'¡Correcto! '+q.why:'No es esa. ¡Inténtalo de nuevo!';f.style.color=ok?'#64e0ae':'#ffbd69'}
+function nextFinalQuestion(){finalStep=(finalStep+1)%finalQuestions.length;const q=finalQuestions[finalStep];document.querySelector('.quiz-box .question').textContent=q.q;const buttons=document.querySelectorAll('.quiz-box .answers button');buttons.forEach((b,i)=>{b.textContent=q.a[i];b.onclick=()=>finalQuiz(i,i===q.correct)});document.getElementById('final-feedback').textContent=''}
+function openGame(id){const el=document.getElementById(id);el.classList.toggle('active');}
+function answer(id,index,correct){const el=document.getElementById(id+'-feedback');if(correct){el.textContent='¡Correcto! Muy bien. 🎉';el.style.color='#64e0ae'}else{el.textContent='Inténtalo otra vez. Lee la pista y piensa en la relación entre las cantidades.';el.style.color='#ffbd69'}}
+function moveCalc(){let v=+document.getElementById('speed').value,t=Math.max(0,+document.getElementById('seconds').value||0);document.getElementById('speedval').textContent=v+' m/s';document.getElementById('distance').textContent='Distancia: '+(v*t)+' metros';document.getElementById('movingBall').style.left=Math.min(88,4+v*4.2)+'%'}
+function gravityCalc(){let g=+document.getElementById('planet').value;document.getElementById('weight').textContent='Peso: '+(10*g).toFixed(1)+' N'}
+</script>
+</body>
+</html>
